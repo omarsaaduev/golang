@@ -1,8 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"golang/pkg/logger"
+	"log/slog"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	logg := logger.SetupLogger()
+	if logg == nil {
+		fmt.Println("Logger is nil")
+	}
+	slog.SetDefault(logg)
 
 }
