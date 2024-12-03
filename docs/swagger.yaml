@@ -1,0 +1,61 @@
+basePath: /
+definitions:
+  handler.Address:
+    properties:
+      city:
+        type: string
+      phone:
+        type: string
+    type: object
+  handler.UserBody:
+    properties:
+      address:
+        items:
+          $ref: '#/definitions/handler.Address'
+        type: array
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+    type: object
+  model.User:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample API documentation using Swagger.
+  title: My API
+  version: "1.0"
+paths:
+  /users:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handler.UserBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.User'
+      tags:
+      - users
+swagger: "2.0"

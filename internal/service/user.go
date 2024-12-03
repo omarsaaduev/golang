@@ -6,26 +6,21 @@ import (
 )
 
 // Интерфейс для usecase
-type UserUseCase struct {
+type UserService struct {
 	repo *repository.UserRepository
 }
 
 // Конструктор UserUseCase
-func NewUserUseCase(repo *repository.UserRepository) *UserUseCase {
-	return &UserUseCase{repo: repo}
+func NewUserService(repo *repository.UserRepository) *UserService {
+	return &UserService{repo: repo}
 }
 
 // Метод для создания пользователя
-func (uc *UserUseCase) CreateUser(first_name, last_name, email string) (*model.User, error) {
-	user := &model.User{FirstName: first_name, LastName: last_name, Email: email}
-	err := uc.repo.Create(user)
+func (us *UserService) CreateUser(firstName, lastName, email string) (*model.User, error) {
+	user := &model.User{FirstName: firstName, LastName: lastName, Email: email}
+	err := us.repo.Create(user)
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
-}
-
-// Метод для получения пользователя по ID
-func (uc *UserUseCase) GetUserByID(id int64) (*model.User, error) {
-	return uc.repo.GetByID(id)
 }
