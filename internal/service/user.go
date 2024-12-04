@@ -27,13 +27,13 @@ func (us *UserService) CreateUser(user *model.User) (*model.User, error) {
 	err := validate.Struct(user)
 	if err != nil {
 		slog.Error("Email validation error")
-		return nil, fmt.Errorf("Email validation error")
+		return nil, fmt.Errorf("email validation error")
 	}
 
 	err = us.repo.Create(user)
 	if err != nil {
 		slog.Error("Failed to create user")
-		return nil, fmt.Errorf("Failed to create user")
+		return nil, fmt.Errorf("failed to create user")
 	}
 
 	return user, nil
