@@ -16,7 +16,6 @@ func ConnectDB() (*sql.DB, error) {
 	name := os.Getenv("POSTGRES_NAME")
 	host := os.Getenv("POSTGRES_HOST")
 
-	slog.Info(fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name))
 	dbStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name)
 	db, err := sql.Open("postgres", dbStr)
 	if err != nil {

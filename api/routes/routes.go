@@ -29,6 +29,7 @@ func SetupRouter() *mux.Router {
 
 	// Настроим маршруты
 	r.HandleFunc("/users", userHandler.CreateUser).Methods("POST")
+	r.HandleFunc("/users/{id}", userHandler.GetUserByID).Methods("GET")
 	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	return r
