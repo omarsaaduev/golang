@@ -38,7 +38,10 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	createdUser, err := h.service.CreateUser(user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&model.Error{
+			Detail: err.Error(),
+		})
 		return
 	}
 
