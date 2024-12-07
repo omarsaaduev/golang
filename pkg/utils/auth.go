@@ -1,25 +1,26 @@
-package service
+package utils
 
 import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 	"golang/internal/model/auth"
+	"os"
 	"time"
 )
 
 // Секреты для подписи токенов
-var accessSecret = []byte("your_access_secret")   // Секрет для Access токена
-var refreshSecret = []byte("your_refresh_secret") // Секрет для Refresh токена
+var accessSecret = []byte(os.Getenv("ACCESS_SECRET"))   // Секрет для Access токена
+var refreshSecret = []byte(os.Getenv("REFRESH_SECRET")) // Секрет для Refresh токена
 
-type TokenService struct{}
+type AuthUtils struct{}
 
-// NewTokenService Конструктор TokenService
-func NewTokenService() *TokenService {
-	return &TokenService{}
+// NewAuthUtils Конструктор
+func NewAuthUtils() *AuthUtils {
+	return &AuthUtils{}
 }
 
 // CreateToken генерирует пару Access и Refresh токенов
-func (t *TokenService) CreateToken(userID string) (*auth.TokenDetails, error) {
+func (t *AuthUtils) CreateToken(userID string) (*auth.TokenDetails, error) {
 	td := &auth.TokenDetails{}
 
 	// Устанавливаем срок действия Access токена (15 минут)

@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"golang/internal/model/auth"
 	"golang/internal/repository"
+	"golang/pkg/utils"
 	"log/slog"
 	"net/smtp"
 	"os"
@@ -84,8 +85,8 @@ func (s *AuthService) SignUp(user *auth.UserCreate) (*auth.TokenDetails, error) 
 	}
 
 	// Генерируем токены
-	tokenService := NewTokenService()
-	tokens, err := tokenService.CreateToken(userID)
+	authUtils := utils.NewAuthUtils()
+	tokens, err := authUtils.CreateToken(userID)
 	if err != nil {
 		return nil, err
 	}
