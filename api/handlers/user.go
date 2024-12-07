@@ -1,9 +1,8 @@
-package handler
+package handlers
 
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"golang/internal/model"
 	"golang/internal/service"
 	"log/slog"
 	"net/http"
@@ -29,28 +28,28 @@ func NewUserHandler(service *service.UserService) *UserHandler {
 // @Produce json
 // @Param user body model.User true "Request body"
 // @Success 201 {object} model.User "Created"
-// @Router /users [post]
-func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user *model.User
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
-		return
-	}
-	createdUser, err := h.service.CreateUser(user)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(&model.Error{
-			Detail: err.Error(),
-		})
-		return
-	}
+//// @Router /users [post]
+//func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+//	var user *auth.UserCreate
+//	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+//		http.Error(w, "Invalid input", http.StatusBadRequest)
+//		return
+//	}
+//	createdUser, err := h.service.CreateUser(user)
+//	if err != nil {
+//		w.WriteHeader(http.StatusBadRequest)
+//		json.NewEncoder(w).Encode(&model.Error{
+//			Detail: err.Error(),
+//		})
+//		return
+//	}
+//
+//	w.Header().Set("Content-Type", "application/json")
+//	w.WriteHeader(http.StatusCreated)
+//	json.NewEncoder(w).Encode(createdUser)
+//}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(createdUser)
-}
-
-// Метод для получения пользователя по id
+// GetUserByID Метод для получения пользователя по id
 func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
