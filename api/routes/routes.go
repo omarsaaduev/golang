@@ -4,13 +4,14 @@ import (
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"golang/api/handlers"
-
+	"golang/internal/cache"
 	"golang/internal/repository"
 	"golang/internal/service"
 	"log"
+	"os"
 )
 
-// Настройка маршрутов для API
+// SetupRouter Настройка маршрутов для API
 func SetupRouter() *mux.Router {
 	// Подключаемся к базе данных
 	dbConn, err := repository.ConnectDB()
@@ -18,9 +19,12 @@ func SetupRouter() *mux.Router {
 		log.Fatal(err)
 	}
 
+	// Подключение к Redis
+	redisCache := cache.NewUserCache(os.Getenv("REDIS_ADDR"), os.Getenv("REDIS_PASSWORD"), 0)
+
 	// Создаем репозиторий и сервис юзера
 	userRepo := repository.NewUserRepository(dbConn)
-	userService := service.NewUserService(userRepo)
+	userService := service.NewUserService(userRepo, redisCache)
 	userHandler := handlers.NewUserHandler(userService)
 
 	// Создаем репозиторий и сервис авторизации

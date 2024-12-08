@@ -36,6 +36,7 @@ func (r *UserRepository) GetUserById(id string) (*model.User, error) {
 	err := row.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.CreatedAt)
 	if err != nil {
 		slog.Error("Error getting user by id:", err)
+		return nil, err
 	}
 	return user, nil
 }

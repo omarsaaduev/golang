@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"golang/internal/model"
 	"golang/internal/service"
 	"log/slog"
 	"net/http"
@@ -23,10 +24,12 @@ func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	user, err := h.service.GetUserByID(id)
+	user, err := h.service.GetUser(r.Context(), id)
 	slog.Info("user", user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(&model.Error{Detail: "Not found user"})
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
