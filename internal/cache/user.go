@@ -20,11 +20,15 @@ func NewUserCache(addr, password string, db int) *UserCache {
 }
 
 // GetUser Получение данных из Redis
-func (u *UserCache) GetUser(ctx context.Context, key string) (string, error) {
-	return u.client.Get(ctx, key).Result()
+func (c *UserCache) GetUser(ctx context.Context, key string) (string, error) {
+	return c.client.Get(ctx, key).Result()
 }
 
 // SetUser сохраняет данные в Redis
-func (u *UserCache) SetUser(ctx context.Context, key string, value interface{}, ttl time.Duration) error {
-	return u.client.Set(ctx, key, value, ttl).Err()
+func (c *UserCache) SetUser(ctx context.Context, key string, value interface{}, ttl time.Duration) error {
+	return c.client.Set(ctx, key, value, ttl).Err()
+}
+
+func (c *UserCache) DeleteUser(ctx context.Context, key string) (int64, error) {
+	return c.client.Del(ctx, key).Result()
 }

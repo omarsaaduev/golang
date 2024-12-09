@@ -27,6 +27,7 @@ func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	user, err := h.service.GetUser(r.Context(), id)
 	slog.Info("user", user)
 	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(&model.Error{Detail: "Not found user"})
 		return
@@ -34,4 +35,16 @@ func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(user)
+}
+
+func (h *UserHandler) DeleteUserById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	err := h.service.DeleteUserById(r.Context(), id)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(&model.Error{Detail: "Not Found"})
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }

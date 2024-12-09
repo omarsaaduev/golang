@@ -41,3 +41,18 @@ func (s *UserService) GetUser(ctx context.Context, id string) (*model.User, erro
 	_ = s.cache.SetUser(ctx, cacheKey, string(userData), 60*time.Second)
 	return user, nil
 }
+
+func (s *UserService) DeleteUserById(ctx context.Context, id string) error {
+	cacheKey := "user:" + id
+	err := s.repo.DeleteUserById(id)
+	if err != nil {
+		return err
+	}
+
+	result, err := s.cache.DeleteUser(ctx, cacheKey)
+	if result == 0 {
+		return err
+	}
+
+	return nil
+}
