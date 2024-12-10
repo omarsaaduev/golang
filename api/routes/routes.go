@@ -44,6 +44,7 @@ func SetupRouter() *mux.Router {
 	//Users
 	r.HandleFunc("/users/{id}", userHandler.GetUserByID).Methods("GET")
 	r.HandleFunc("/users/{id}", userHandler.DeleteUserById).Methods("DELETE")
+	r.HandleFunc("/users/{id}", userHandler.PatchUserById).Methods("PATCH")
 
 	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 

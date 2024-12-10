@@ -56,3 +56,7 @@ func (s *UserService) DeleteUserById(ctx context.Context, id string) error {
 
 	return nil
 }
+
+func (s *UserService) PatchUserById(id string, user *model.UserPatch) (*model.User, error) {
+	return s.repo.PatchUserById(id, user)
+}

@@ -48,3 +48,27 @@ func (h *UserHandler) DeleteUserById(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusNoContent)
 }
+
+func (h *UserHandler) PatchUserById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var userBody *model.UserPatch
+	err := json.NewDecoder(r.Body).Decode(&userBody)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&model.Error{Detail: "Invalid body"})
+		return
+	}
+
+	user, err := h.service.PatchUserById(id, userBody)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&model.Error{Detail: "Failed patch user"})
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(user)
+
+}
