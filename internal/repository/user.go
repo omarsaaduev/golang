@@ -78,3 +78,21 @@ func (r *UserRepository) PatchUserById(id string, user *model.UserPatch) (*model
 	// Теперь получаем обновленного пользователя из базы данных
 	return r.GetUserById(id)
 }
+
+func (r *UserRepository) GetUsers() ([]model.User, error) {
+	query := `SELECT id, first_name, last_name, email, created_at FROM users`
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query users: %v", err)
+	}
+
+	var users []model.User
+	for rows.Next() {
+		var user model.User
+		if err = rows.Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.CreatedAt); err != nil {
+			return nil, fmt.Errorf("failed to scan user: %v", err)
+		}
+		users = append(users, user)
+	}
+	return users, nil
+}

@@ -42,6 +42,7 @@ func SetupRouter() *mux.Router {
 	r.HandleFunc("/auth/confirm", authHandler.VerificationCode).Methods("POST")
 
 	//Users
+	r.HandleFunc("/users", userHandler.GetUsers).Methods("GET")
 	r.HandleFunc("/users/{id}", userHandler.GetUserByID).Methods("GET")
 	r.HandleFunc("/users/{id}", userHandler.DeleteUserById).Methods("DELETE")
 	r.HandleFunc("/users/{id}", userHandler.PatchUserById).Methods("PATCH")
